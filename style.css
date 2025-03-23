@@ -38,3 +38,14 @@ input:invalid{
 input:focus:invalid {
     outline: none;
   }
+
+.details{
+    border: 2px solid black;
+    padding: 1.5rem 3rem;
+    margin-left: 5rem;
+    font-size: 2rem;
+}
+
+.hidden{
+    display: none;
+}

@@ -1,74 +1,110 @@
 const form = document.getElementById("form");
-const email = document.getElementById("email");
+const email = document.querySelector('#email')
 const country = document.getElementById("country");
 const code = document.getElementById("code");
 const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirm-password");
 const submitBtn = document.querySelector("button");
 
-email.addEventListener('input', (event)=>{
-    if (email.validity.valid) {
-        email.setCustomValidity('')
-    }else{
-        showError(email)
-    }
-});
-country.addEventListener('input', (event)=>{
-    if (country.validity.valid) {
-        country.setCustomValidity('')
-    }else{
-        showError(country)
-    }
-});
-code.addEventListener('input', (event)=>{
-    if (code.validity.valid) {
-        code.setCustomValidity('')
-    }else{
-        showError(code)
-    }
-});
-password.addEventListener('input', (event)=>{
-    if (password.validity.valid) {
-        password.setCustomValidity('')
-    }else{
-        showError(password)
-    }
-});
+const emailSpan = document.querySelector('.emailName')
+const countrySpan = document.querySelector('.countryName')
+const codeSpan = document.querySelector('.codeName')
+const passwordSpan = document.querySelector('.passwordName')
 
+const details = document.querySelector('.details')
 
-
-function showError(element){
-    if (element.validity.valueMissing) {
-        element.setCustomValidity(`Im expecting a  ${element} __33`);
-      } else if (element.validity.typeMismatch) {
-        element.setCustomValidity(`Im expecting a valid ${element} __33`);
-      } else if (element.validity.tooShort) {
-        element.setCustomValidity(`Minimum length is ${element.minlength} and current length is ${element.value.length}`);
-      }else if(element.validity.tooLong){
-        element.setCustomValidity(`Maximum length is ${element.maxlength} and current length is ${element.value.length}`);
-      }
-
-      element.reportValidity();
+function validateEmail(){
+    email.setCustomValidity('');
+    if(email.value.trim() === ''){
+        email.setCustomValidity('Email Name cant be Empty__33')
+    }else if(email.validity.typeMismatch){
+        email.setCustomValidity('Im expecting an email address__33')
+    }else if(email.validity.tooShort){
+        email.setCustomValidity(`Email should be at least ${email.minLength} characters; you entered ${email.value.length}.`)
+    }
+    email.reportValidity();
 }
 
-form.addEventListener("submit", (event) => {
-    // if the email field is invalid
-    if (!email.validity.valid) {
-      // display an appropriate error message
-      showError(email);
-      // prevent form submission
-      event.preventDefault();
-    }else if(!country.validity.valid){
-        showError(country);
-      // prevent form submission
-      event.preventDefault();
-    }else if(!code.validity.valid){
-        showError(code);
-      // prevent form submission
-      event.preventDefault();
-    }else if(!password.validity.valid){
-        showError(password);
-      // prevent form submission
-      event.preventDefault();
+function validateCountry(){
+    country.setCustomValidity('');
+    if(country.value.trim() === ''){
+        country.setCustomValidity('Country Name cant be Empty__33')
+    }else if(country.validity.typeMismatch){
+        country.setCustomValidity('Im expecting an country Name__33')
+    }else if(country.validity.tooShort){
+        country.setCustomValidity(`Country should be at least ${country.minLength} characters; you entered ${country.value.length}.`)
+    }else if(country.validity.tooLong){
+        country.setCustomValidity(`Country should be ${country.maxLength} characters; you entered ${country.value.length}.`)
     }
-  });
+    country.reportValidity();
+}
+function validateCode(){
+    code.setCustomValidity('');
+    if(code.value.trim() === ''){
+        code.setCustomValidity('code cant be Empty__33')
+    }else if(code.validity.typeMismatch){
+        code.setCustomValidity('Im expecting an code')
+    }else if(code.validity.rangeUnderflow){
+        code.setCustomValidity(`code should be at least ${code.min} ; you entered ${code.value}.`)
+    }else if(code.validity.rangeOverflow){
+        code.setCustomValidity(`code should be under ${code.max}; you entered ${code.value}.`)
+    }
+    code.reportValidity();
+}
+
+
+function validatepassword(){
+    password.setCustomValidity('');
+    if(password.value.trim() === ''){
+        password.setCustomValidity('password cant be Empty__33')
+    }else if(password.validity.tooShort){
+        password.setCustomValidity(`password should be at least ${password.minLength} characters; you entered ${password.value.length}.`)
+    }
+    password.reportValidity();
+}
+
+function validateConfirmPassword(){
+    confirmPassword.setCustomValidity('');
+    if(password.value !== confirmPassword.value){
+        confirmPassword.setCustomValidity(`confirm password didn't match password __! `)
+    }
+    confirmPassword.reportValidity();
+}
+
+
+
+
+email.addEventListener('input', validateEmail)
+country.addEventListener('input', validateCountry)
+code.addEventListener('input', validateCode)
+password.addEventListener('input', validatepassword)
+confirmPassword.addEventListener('input', validateConfirmPassword)
+
+
+form.addEventListener("submit", (event) => {
+    validateCode()
+    validateEmail()
+    validateCountry()
+    validatepassword()
+    validateConfirmPassword()
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        event.preventDefault();
+        return;
+    }
+
+    // Show details and update spans
+    event.preventDefault();
+    details.classList.remove("hidden");
+    emailSpan.textContent = `${email.value}`;
+    codeSpan.textContent = `${code.value}`;
+    countrySpan.textContent = `${country.value}`;
+    passwordSpan.textContent = `${password.value}`;
+    clearForm()
+
+    
+});
+
+function clearForm() {
+    form.reset();
+}
