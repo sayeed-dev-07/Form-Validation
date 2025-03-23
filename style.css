@@ -34,9 +34,11 @@ button{
 }
 input:invalid{
     border-color: rgb(247, 12, 12);
+    background-color: rgba(255, 0, 0, 0.107);
 }
-input:focus:invalid {
-    outline: none;
+input:focus:valid{
+    border-color: black ;
+    background-color: transparent;
   }
 
 .details{
