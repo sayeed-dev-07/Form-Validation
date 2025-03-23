@@ -32,3 +32,9 @@ button{
     font-size: 1.5rem;
     cursor: pointer;
 }
+input:invalid{
+    border-color: rgb(247, 12, 12);
+}
+input:focus:invalid {
+    outline: none;
+  }
